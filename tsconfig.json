@@ -6,21 +6,26 @@
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "allowJs": true,
+    "strict": true, // Verificações de tipagem
+    "allowSyntheticDefaultImports": true, // import * as React from 'react'; => import React from 'react'
+    "esModuleInterop": true, // junto com o "allowSyntheticDefaultImports" para usar os imports
+    "isolatedModules": true, // ajuda que o código typescript seja entendido por outros transpiladores
+    "jsx": "react-jsx", // Qual o tipo de código JSX que será gerado
+    "noEmit": true, //  não gerar códigos javascript como código fonte
+    "skipLibCheck": true, // Pula a verificação de arquivos de declaração, isso economiza tempo de compilação.
+		"baseUrl": "src",
+    "paths": {
+      "~/*": ["*"] // root import
+    }
   },
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"],
   "include": [
     "src"
-  ]
+, "babel.config.js"  ]
 }
