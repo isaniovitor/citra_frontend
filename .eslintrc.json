@@ -59,7 +59,8 @@
         "ignorePackages",
         {
           "ts": "never",
-          "tsx": "never"
+          "tsx": "never",
+          "js": "never"
         }
       ],
       "import-helpers/order-imports": [
