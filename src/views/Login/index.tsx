@@ -1,8 +1,9 @@
-import { Form } from '@unform/web';
 import React, { useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Input from '../../components/Form/Input';
-// import { Container } from './styles';
+
+import * as S from './styles';
 
 function Login() {
   const formRef = useRef(null);
@@ -12,12 +13,27 @@ function Login() {
   }
 
   return (
-    <div>
-      <h1>Cadastrar Operação</h1>
-      <Form ref={formRef} onSubmit={handleSubmit}>
-        <Input label="Name" name="name" />
-      </Form>
-    </div>
+    <S.Conteiner>
+      <S.FormConteiner ref={formRef} onSubmit={handleSubmit}>
+        <S.IconConteiner />
+
+        <S.InputContainer>
+          <Input name="name" label="Email" />
+
+          <Input name="password" label="Senha" />
+
+          <button type="submit">Entrar</button>
+          {/* <hr /> */}
+        </S.InputContainer>
+
+        <p>Esqueceu a senha?</p>
+        <hr />
+
+        <Link to="/userRegister">
+          <button type="button">Cadastrar </button>
+        </Link>
+      </S.FormConteiner>
+    </S.Conteiner>
   );
 }
 

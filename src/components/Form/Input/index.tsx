@@ -1,26 +1,23 @@
 import { useField } from '@unform/core';
 import type { InputHTMLAttributes } from 'react';
 import { useRef, useEffect } from 'react';
+// import ReactInputMask from 'react-input-mask';
+import ReactInputMask from 'react-input-mask';
+import { Input as InputStrp } from 'reactstrap';
 
-// import * as S from './styles';
+import * as S from './styles';
 
 interface Props {
   name: string;
   mask?: string;
-  value?: string;
-  size?: number;
-  label: string;
-  type?: string;
+  label?: string;
 }
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & Props;
 
-function Input(
-  { name, mask, type, label, value, size }: InputProps,
-  ...rest: any[]
-) {
+function Input({ name, mask, label, ...rest }: InputProps) {
   const inputRef = useRef(null);
-  console.log(mask, type, value, size, ...rest);
+  // console.log(mask, rest.type, mask);
 
   const { fieldName, defaultValue, registerField, error } = useField(name);
 
@@ -43,11 +40,29 @@ function Input(
   }, [fieldName, registerField]);
 
   return (
-    <>
-      <label htmlFor={fieldName}>{label}</label>
-      <input id={fieldName} ref={inputRef} defaultValue={defaultValue} />
+    <div
+      style={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        borderBottom: 'none',
+        gap: '3px',
+      }}
+    >
+      {label && <label htmlFor={fieldName}>{label}</label>}
+
+      <InputStrp
+        as={ReactInputMask}
+        mask={mask}
+        name={name}
+        id={fieldName}
+        innerRef={inputRef}
+        defaultValue={defaultValue}
+        {...rest}
+      />
+
       {error && <span className="error">{error}</span>}
-    </>
+    </div>
   );
 }
 

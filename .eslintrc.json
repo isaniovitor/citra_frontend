@@ -60,7 +60,8 @@
         {
           "ts": "never",
           "tsx": "never",
-          "js": "never"
+          "js": "never",
+          "jsx": "never"
         }
       ],
       "import-helpers/order-imports": [

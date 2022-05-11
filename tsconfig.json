@@ -19,7 +19,7 @@
     "jsx": "react-jsx", // Qual o tipo de código JSX que será gerado
     "noEmit": true, //  não gerar códigos javascript como código fonte
     "skipLibCheck": true, // Pula a verificação de arquivos de declaração, isso economiza tempo de compilação.
-		"baseUrl": "src",
+		"baseUrl": "./src",
     "paths": {
       "~/*": ["*"] // root import
     }
