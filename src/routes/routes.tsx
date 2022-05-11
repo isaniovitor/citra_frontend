@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 import Layout from '../layout';
+import Home from '../views/Home';
 import Login from '../views/Login';
 import UserRegister from '../views/UserRegister';
 // import PrivateRoute from './privateRoute';
@@ -26,12 +27,8 @@ const routes = [
     element: <Layout />,
     children: [
       {
-        path: '/login',
-        element: <Login />,
-      },
-      {
-        path: '/userRegister',
-        element: <UserRegister />,
+        path: '/home',
+        element: <Home />,
       },
     ],
   },

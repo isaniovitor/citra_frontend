@@ -9,6 +9,7 @@ import Login from './views/Login';
 import UserRegister from './views/UserRegister';
 
 import { GlobalStyles } from './styles/GlobalStyles';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

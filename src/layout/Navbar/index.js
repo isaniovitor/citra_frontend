@@ -1,14 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import profile from '../../assets/login/profile.png';
 
-import {
-	NavOptionStyles,
-	TitleStyles,
-	NavbarStyles,
-	NavTextStyles,
-	NavItemStyles,
-	TextoAndLogoStyles,
-} from './styles';
+import * as S from './styles';
 
 
 export const SidebarData = [
@@ -40,27 +34,15 @@ const Navbar = () => {
 	};
 
 	return (
-		<NavbarStyles>
-			<TextoAndLogoStyles>
+		< S.NavbarStyles>
 				<Link to={'/'}>
-					<TitleStyles>SGO</TitleStyles>
+					<label>SGO</label>
 				</Link>
-			</TextoAndLogoStyles>
-			<NavItemStyles>
-				{SidebarData.map((item, index) => {
-					return (
-						<NavTextStyles key={index} >
-							<Link to={item.path}>
-								<span>{item.title}</span>
-							</Link>
-						</NavTextStyles>
-					);
-				})}
-			</NavItemStyles>
-			<NavOptionStyles >
-				<span onClick={() => logout()} >Sair</span>
-			</NavOptionStyles>
-		</NavbarStyles>
+
+        <Link to={'/'}>
+					< S.ImgStyles src={profile} alt="User Image" />
+				</Link>
+		</S.NavbarStyles>
 	);
 };
 
