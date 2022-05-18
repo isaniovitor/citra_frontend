@@ -1,9 +1,6 @@
 import { useField } from '@unform/core';
 import type { InputHTMLAttributes } from 'react';
 import { useRef, useEffect } from 'react';
-// import ReactInputMask from 'react-input-mask';
-import ReactInputMask from 'react-input-mask';
-import { Input as InputStrp } from 'reactstrap';
 
 import * as S from './styles';
 
@@ -11,11 +8,12 @@ interface Props {
   name: string;
   mask?: string;
   label?: string;
+  type?: string;
 }
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & Props;
 
-function Input({ name, mask, label, ...rest }: InputProps) {
+function Input({ name, mask, label, type, ...rest }: InputProps) {
   const inputRef = useRef(null);
   // console.log(mask, rest.type, mask);
 
@@ -51,17 +49,16 @@ function Input({ name, mask, label, ...rest }: InputProps) {
     >
       {label && <label htmlFor={fieldName}>{label}</label>}
 
-      <InputStrp
-        as={ReactInputMask}
-        mask={mask}
-        name={name}
+      <S.Input
+        type={type || 'text'}
+        mask={mask || ''}
         id={fieldName}
-        innerRef={inputRef}
+        ref={inputRef}
         defaultValue={defaultValue}
         {...rest}
       />
 
-      {error && <span className="error">{error}</span>}
+      {error && <span className="text-danger">{error}</span>}
     </div>
   );
 }

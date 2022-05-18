@@ -1,15 +1,28 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 import Input from '../../components/Form/Input';
+import { singInUserSchema } from '../../constants/schemas';
+import { useAuth } from '../../contexts/AuthContext';
+import { validationForm } from '../../helpers/validationFom';
 
 import * as S from './styles';
 
 function Login() {
+  const navigate = useNavigate();
   const formRef = useRef(null);
+  const { signIn } = useAuth();
 
-  function handleSubmit(data: any, { reset }: any) {
-    console.log(data, formRef, reset);
+  async function handleSubmit(data: any, { reset }: any) {
+    if (await validationForm(data, singInUserSchema, formRef)) {
+      if (await signIn({ email: data.email, password: data.password })) {
+        navigate('/home', { replace: true });
+        toast.success('Login feito com sucesso!');
+      } else {
+        toast.error('Falha ao fazer login!');
+      }
+    }
   }
 
   return (
@@ -18,9 +31,9 @@ function Login() {
         <S.IconConteiner />
 
         <S.InputContainer>
-          <Input name="name" label="Email" />
+          <Input name="email" label="Email" />
 
-          <Input name="password" label="Senha" />
+          <Input name="password" label="Senha" type="password" />
 
           <button type="submit">Entrar</button>
           {/* <hr /> */}

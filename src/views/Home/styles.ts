@@ -9,7 +9,7 @@ export const Conteiner = styled.div`
   display: flex;
   flex-direction: column;
 
-  width: 100vw;
+  width: 100%;
   /* menos o height do menu */
   height: calc(100vh - 71px);
   /* height: 100vh; */
@@ -26,7 +26,7 @@ export const SearchMenuContainer = styled.div`
   height: 60px;
   padding: 10px 50px;
 
-  /* background-color: #2eacdc; */
+  background-color: #fff;
 
   input {
     height: 40px;
@@ -35,7 +35,7 @@ export const SearchMenuContainer = styled.div`
     padding-left: 5px;
 
     border-radius: 5px;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #e5e5e5;
   }
 
   button {

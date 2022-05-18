@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { Children } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import Layout from '../layout';
+import UserEditProfile from '../views/EditProfile';
 import Home from '../views/Home';
 import Login from '../views/Login';
+import UserProfile from '../views/UserProfile';
 import UserRegister from '../views/UserRegister';
+import PrivateRoutes from './privateRoute';
 // import PrivateRoute from './privateRoute';
 
 const routes = [
-  {
-    path: '*',
-    element: <h1>Página não encontrada.</h1>,
-  },
-
   {
     path: '/',
     element: <Login />,
@@ -24,11 +22,26 @@ const routes = [
   },
 
   {
-    element: <Layout />,
+    element: <PrivateRoutes />,
     children: [
       {
-        path: '/home',
-        element: <Home />,
+        element: <Layout />,
+        children: [
+          {
+            path: '/home',
+            element: <Home />,
+          },
+
+          {
+            path: '/profile',
+            element: <UserProfile />,
+          },
+
+          {
+            path: '/editProfile',
+            element: <UserEditProfile />,
+          },
+        ],
       },
     ],
   },

@@ -8,7 +8,7 @@ export const NavbarStyles = styled.div`
     padding: 0 50px;
     height: 60px;
 
-background-color: #2eacdc;;
+    background-color: #2eacdc;
     `;
 
 export const ImgStyles = styled.img`

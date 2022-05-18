@@ -3,11 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import Input from '../../components/Form/Input';
 import Jobs from '../../components/Jobs';
+import { useAuth } from '../../contexts/AuthContext';
 import Carousel from './components/Carousel';
 
 import * as S from './styles';
 
 function Home() {
+  const { isLogged, user } = useAuth();
+  console.log(isLogged, user);
+
   return (
     <S.Conteiner>
       <Carousel />

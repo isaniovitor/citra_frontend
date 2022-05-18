@@ -82,7 +82,7 @@ export const IconConteiner = styled.div`
 // InputContainer
 export const InputContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 15px;
 
   width: 100%;
@@ -91,7 +91,7 @@ export const InputContainer = styled.div`
 
 export const ColInputContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 15px;
 
   width: 100%;

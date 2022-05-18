@@ -4,43 +4,23 @@ import profile from '../../assets/login/profile.png';
 
 import * as S from './styles';
 
-
-export const SidebarData = [
-	{
-		title: 'Inicio',
-		path: '/inicio',
-	},
-	{
-		title: 'Estatísticas',
-		path: '/estatisticas',
-	},
-	{
-		title: 'Operações',
-		path: '/operacoes',
-	},
-	{
-		title: 'Forças',
-		path: '/forcas',
-	}
-];
-
 const Navbar = () => {
 
 	const navigate = useNavigate();
-	const logout = () => {
-		localStorage.clear();
-		sessionStorage.clear();
-		navigate('/login', { replace: true });
-	};
+	// const logout = () => {
+	// 	localStorage.clear();
+	// 	sessionStorage.clear();
+	// 	navigate('/login', { replace: true });
+	// };
 
 	return (
-		< S.NavbarStyles>
-				<Link to={'/'}>
+		<S.NavbarStyles>
+				<Link to={'/home'}>
 					<label>SGO</label>
 				</Link>
 
-        <Link to={'/'}>
-					< S.ImgStyles src={profile} alt="User Image" />
+        <Link to={'/profile'}>
+					<S.ImgStyles src={profile} alt="User Image" />
 				</Link>
 		</S.NavbarStyles>
 	);
