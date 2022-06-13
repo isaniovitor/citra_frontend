@@ -23,6 +23,13 @@ export const registerUserSchema = Yup.object().shape({
     .test('completo', 'prencha corretamente', function test(item) {
       return !item?.includes('_');
     }),
+  privacy: Yup.boolean().test(
+    'termos',
+    'Aceite os termos',
+    function test(item) {
+      return !!item;
+    },
+  ),
 });
 
 export const editUserSchema = Yup.object().shape({
@@ -53,4 +60,11 @@ export const editUserSchema = Yup.object().shape({
 export const singInUserSchema = Yup.object().shape({
   email: Yup.string().required('Campo Obrigatório'),
   password: Yup.string().required('Campo Obrigatório'),
+});
+
+// jobs
+
+// cadidatar-se
+export const applySchema = Yup.object().shape({
+  cv: Yup.mixed().required('A file is required'),
 });

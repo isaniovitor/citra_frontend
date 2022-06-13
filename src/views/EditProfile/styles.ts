@@ -1,9 +1,14 @@
 import { Form as unform } from '@unform/web';
+import { url } from 'inspector';
 import styled from 'styled-components';
 
 import bg from '../../assets/login/bbg.png';
 import profile from '../../assets/login/profile.png';
 import bgProfile from '../../assets/userProfile/bgUser.jpg';
+
+interface ImageProps {
+  imageURL: string;
+}
 
 // Conteiners
 export const Conteiner = styled.div`
@@ -50,9 +55,9 @@ export const ImagesContainer = styled.div`
 // Icon
 export const ImageContainer = styled.div`
   display: flex;
+  flex: 0.2;
   align-items: center;
   justify-content: center !important;
-  /* border: 1px solid red; */
 `;
 
 export const IconConteiner = styled.div`
@@ -62,8 +67,6 @@ export const IconConteiner = styled.div`
   border-radius: 50%;
 
   border: 1px solid rgba(0, 0, 0, 0.25);
-
-  background-image: url(${profile});
 
   background-repeat: no-repeat, repeat-x;
   background-size: cover;
@@ -130,6 +133,7 @@ export const FormConteiner = styled(unform)`
 // InputContainer
 export const InputContainer = styled.div`
   display: flex;
+  flex: 0.9;
   flex-direction: column;
   gap: 15px;
 

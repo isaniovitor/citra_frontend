@@ -5,43 +5,31 @@ import {
   useContext,
   useState,
 } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import type { UserData } from '../@types/user';
 import api from '../services/api';
 import request from '../services/request';
 // import { useHistory } from 'react-router-dom';
 
 interface AuthContextState {
-  signIn({ email, password }: UserDataLogin): Promise<boolean>;
+  signIn({ Email, password }: UserDataLogin): Promise<boolean>;
   singOut(): void;
-  userRegister({ Email, Senha }: UserData): Promise<boolean>;
+  userUpdate({ Email, password }: UserData): Promise<boolean>;
+  userRegister({ Email, password }: UserData): Promise<boolean>;
   isLogged: boolean;
-  user: object | null;
+  user: UserData | null;
 }
 
 interface UserDataLogin {
-  email: string;
-  password: string;
-}
-
-interface UserData {
-  NomeCompleto: string;
   Email: string;
-  CEP: string;
-  Senha: string;
-  Celular: string;
-  CPF: string;
-  Foto: null;
-  Curriculo: null;
-  Descricao: string;
-  DataNasc: string;
+  password: string;
 }
 
 const AuthContext = createContext<AuthContextState>({} as AuthContextState);
 
 function AuthProvider({ children }: any) {
-  const [user, setUser] = useState<object | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
   const [userToken, setUserToken] = useState((): any => {
     const hasToken = localStorage.getItem('@PermissionYT:token');
 
@@ -54,9 +42,7 @@ function AuthProvider({ children }: any) {
     return true;
   });
 
-  // console.log(userToken);
-
-  const signIn = useCallback(async ({ email, password }: UserDataLogin) => {
+  const signIn = useCallback(async ({ Email, password }: UserDataLogin) => {
     let success = false;
 
     // const response = await api.post('/sessions', {
@@ -73,21 +59,13 @@ function AuthProvider({ children }: any) {
     // console.log(response.data);
 
     response.data.forEach((element: any) => {
-      if (element.Email === email && element.Senha === password) {
+      if (element.Email === Email && element.password === password) {
         setUser(element);
         success = true;
 
-        // localStorage.setItem('@PermissionYT:token', token);
-        // api.defaults.headers.common.authorization = `Bearer ${token}`;
+        localStorage.setItem('token', `${element.userId}`);
+        // api.defaults.headers.common.authorization = `Bearer ${element.userId}`;
       }
-
-      // if (
-      //   (element.Email === email && element.Senha !== password) ||
-      //   (element.Email !== email && element.Senha === password)
-      // ) {
-      //   toast.error('Email ou senha incorretos!');
-      // }
-      // console.log('aqa');
     });
 
     return success;
@@ -106,32 +84,119 @@ function AuthProvider({ children }: any) {
 
   const userRegister = useCallback(
     async ({
-      NomeCompleto,
+      name,
       Email,
-      CEP,
-      Senha,
-      Celular,
-      CPF,
-      DataNasc,
-      Foto,
-      Descricao,
+      cep,
+      password,
+      fone,
+      cpf,
+      cv,
+      birthdate,
+      picture,
     }: UserData) => {
       let success = false;
+      const dataForm = new FormData();
 
-      const response = await request.postUser('usuarios', {
-        NomeCompleto,
-        Email,
-        CEP,
-        Senha,
-        Celular,
-        CPF,
-        DataNasc,
-        Foto,
-        Descricao,
-      });
+      // solution for the error: O dado submetido não é um arquivo. Certifique-se do tipo de codificação no formulário.
+      // tirar cv e picture como obg
 
-      if (response.status >= 200 && response.status < 300) {
-        success = true;
+      if (cv !== undefined) dataForm.append('cv', cv);
+      if (picture !== undefined) dataForm.append('picture', picture);
+
+      dataForm.append('name', name);
+      dataForm.append('Email', Email);
+      dataForm.append('cep', cep);
+      dataForm.append('password', password);
+      dataForm.append('fone', fone);
+      dataForm.append('cpf', cpf);
+      dataForm.append('birthdate', birthdate);
+      // data.append('description', description);
+
+      try {
+        const response = await request.postUser('usuarios', dataForm);
+
+        console.log(response.status);
+
+        if (response.status >= 200 && response.status < 300) {
+          console.log('aq');
+          success = true;
+        }
+      } catch (err: any) {
+        const { data } = err.response;
+        console.log(data);
+
+        if (data.cpf) {
+          data.cpf.forEach((element: any) => {
+            toast.error(`CPF: ${element}`);
+          });
+        }
+
+        if (data.CPF) {
+          data.CPF.forEach((element: any) => {
+            toast.error(`CPF: ${element}`);
+          });
+        }
+
+        // // const newData = JSON.parse(data);
+        // // console.log(l);
+
+        // data.Email.forEach((error: any) => {
+        //   // console.log(data);
+
+        //   toast.error(`${error}`);
+        // });
+      }
+
+      return success;
+    },
+    [],
+  );
+
+  const userUpdate = useCallback(
+    async ({
+      userId,
+      name,
+      Email,
+      cep,
+      password,
+      fone,
+      cpf,
+      cv,
+      birthdate,
+      picture,
+      description,
+    }: UserData) => {
+      let success = false;
+      const data = new FormData();
+
+      // solution for the error: O dado submetido não é um arquivo. Certifique-se do tipo de codificação no formulário.
+      // tirar cv e picture como obg
+
+      if (cv !== undefined) data.append('cv', cv);
+      if (picture !== undefined) data.append('picture', picture);
+
+      data.append('name', name);
+      data.append('Email', Email);
+      data.append('cep', cep);
+      data.append('password', password);
+      data.append('fone', fone);
+      data.append('cpf', cpf);
+      data.append('birthdate', birthdate);
+      data.append('description', description);
+
+      try {
+        const response = await request.postUpdateUserr(
+          'usuarios',
+          userId,
+          data,
+        );
+
+        if (response.status >= 200 && response.status < 300) {
+          success = true;
+          setUser(response.data);
+        }
+      } catch (err: any) {
+        console.log(err);
       }
 
       return success;
@@ -142,7 +207,14 @@ function AuthProvider({ children }: any) {
   return (
     <AuthContext.Provider
       // eslint-disable-next-line react/jsx-no-constructed-context-values
-      value={{ signIn, singOut, userRegister, isLogged: !!user, user }}
+      value={{
+        signIn,
+        singOut,
+        userUpdate,
+        userRegister,
+        isLogged: !!user,
+        user,
+      }}
     >
       {children}
     </AuthContext.Provider>

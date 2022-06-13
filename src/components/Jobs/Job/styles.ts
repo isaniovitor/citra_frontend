@@ -27,4 +27,17 @@ export const JobDescription = styled.div`
   width: 100%;
   flex-direction: column;
   /* background-color: aqua; */
+  label {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  p:last-child {
+    color: #2eacdc;
+    cursor: pointer;
+
+    :hover {
+      text-decoration: underline;
+    }
+  }
 `;

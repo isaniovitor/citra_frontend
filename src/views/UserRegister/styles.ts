@@ -62,21 +62,20 @@ export const FormConteiner = styled(unform)`
 `;
 
 // Icon
-export const IconConteiner = styled.div`
+export const ImageContainer = styled.div`
   position: absolute;
-  top: -75px;
+  top: -40px;
 
+  /* display: flex;
+  flex: 0.2;
+  align-items: center;
+  justify-content: center !important; */
   width: 150px;
   height: 150px;
 
   border-radius: 50%;
 
-  border: 1px solid rgba(0, 0, 0, 0.25);
-
-  background-image: url(${profile});
-
-  background-repeat: no-repeat, repeat-x;
-  background-size: cover;
+  border: 2px solid rgba(0, 0, 0, 0.25);
 `;
 
 // InputContainer

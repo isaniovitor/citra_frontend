@@ -1,5 +1,5 @@
 import { useField } from '@unform/core';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import * as S from './styles';
@@ -13,75 +13,84 @@ interface DropProps {
 
 function ReactDropzoneInput({ name, label }: DropProps) {
   const inputRef = useRef(null);
-  const { fieldName, registerField } = useField(name);
-  const [acceptedFiles, setAcceptedFiles] = useState([]);
+  const { fieldName, registerField, defaultValue, error } = useField(name);
+  const [file, setFile] = useState<any>();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: 'pdf/*',
+    accept: 'application/pdf',
     onDrop: (onDropAcceptedFiles: any) => {
       if (inputRef.current) {
         inputRef.current.acceptedFiles = onDropAcceptedFiles;
-        setAcceptedFiles(onDropAcceptedFiles);
+        console.log(inputRef.current.acceptedFiles);
       }
     },
   });
+
+  const handlePreview = useCallback(e => {
+    const newFile = e.target.files?.[0];
+
+    if (!newFile) {
+      setFile(null);
+    }
+
+    // console.log(e.target.files?.[0]);
+
+    setFile(newFile);
+  }, []);
 
   useEffect(() => {
     registerField({
       name: fieldName,
       ref: inputRef.current,
-      getValue: ref => {
-        return ref.acceptedFiles || [];
+      path: 'files[0]',
+      // getValue: ref => {
+      //   return ref.acceptedFiles || [];
+      // },
+      clearValue(ref: HTMLInputElement) {
+        ref.value = '';
       },
-      clearValue: ref => {
-        ref.acceptedFiles = [];
-        setAcceptedFiles([]);
-      },
-      setValue: (ref, value: any) => {
-        ref.acceptedFiles = value;
-        setAcceptedFiles(value);
+      setValue(_: HTMLInputElement, value: string) {
+        // setPreview(value);
       },
     });
   }, [fieldName, registerField]);
 
   return (
-    <div
+    <S.Container
       {...getRootProps()}
+      style={{ width: '100%' }}
       onClick={() => inputRef.current?.click()}
-      style={{ width: '100%', height: '40px' }}
     >
       {label && <label htmlFor={fieldName + label}>{label}</label>}
 
-      <S.Input {...getInputProps()} accept="pdf/*" ref={inputRef} />
+      <S.Input
+        {...getInputProps()}
+        type="file"
+        accept="application/pdf"
+        ref={inputRef}
+        multiple={false}
+        // defaultValue={defaultValue}
+        onChange={handlePreview}
+      />
 
       <S.DropConteiner isDragActive={isDragActive}>
-        {/* <img src={isDragActive ? greendrop : drop} alt="dropIcon" /> */}
-
         {isDragActive ? (
-          <p>Solte aqui</p>
+          <p>
+            <span>Solte aq</span>
+          </p>
         ) : (
           <p>
-            <span className="greenText">Selecione um arquivo&nbsp;</span>
-            ou arraste para cá
+            {file || defaultValue ? (
+              <span>{defaultValue || file.name}</span>
+            ) : (
+              <>Selecione um arquivo ou arraste para cá!</>
+            )}
           </p>
         )}
       </S.DropConteiner>
 
-      {/* {acceptedFiles.length !== 0 && (
-        <S.ImagesConteiner>
-          {acceptedFiles.map((file, index) => {
-            const url = URL.createObjectURL(file);
-
-            return (
-              <div key={index}>
-                {console.log(url)}
-                <img src={url} style={{ width: '100%', height: '100px' }} />
-              </div>
-            );
-          })}
-        </S.ImagesConteiner>
-      )} */}
-    </div>
+      {error && <span className="text-danger">{error}</span>}
+    </S.Container>
   );
 }
 

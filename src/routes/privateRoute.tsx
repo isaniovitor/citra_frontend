@@ -29,7 +29,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 function PrivateRoutes() {
   const { isLogged, user } = useAuth();
-  console.log(isLogged, user);
+  // console.log(isLogged, user);
 
   return !isLogged ? <Navigate to="/" /> : <Outlet />;
 }

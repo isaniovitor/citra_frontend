@@ -21,6 +21,10 @@ export const Conteiner = styled.div`
   background-size: cover;
 
   /* border: 1px solid red; */
+
+  canvas {
+    border-radius: 50%;
+  }
 `;
 
 export const FormConteiner = styled(unform)`

@@ -14,6 +14,8 @@ export const NavbarStyles = styled.div`
 export const ImgStyles = styled.img`
   height: 40px;
   width: 40px;
+
+  border-radius:  50%;
 `;
 
 

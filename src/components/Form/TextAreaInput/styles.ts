@@ -1,7 +1,7 @@
 import InputMask from 'react-input-mask';
 import styled from 'styled-components';
 
-export const Input = styled(InputMask)`
+export const TextAreaInput = styled.textarea`
   border: none;
   display: block;
   width: 100%;
@@ -9,8 +9,6 @@ export const Input = styled(InputMask)`
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  /* aq */
-  height: 40px;
   color: #212529;
   background-color: #fff;
   background-clip: padding-box;

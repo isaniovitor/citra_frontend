@@ -2,25 +2,25 @@ import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import Input from '../../components/Form/Input';
+import { useAuth } from '../../contexts/AuthContext';
 
 import * as S from './styles';
 
 function UserProfile() {
   const formRef = useRef(null);
+
   const navigate = useNavigate();
+  const { userUpdate, user } = useAuth();
 
   function handleSubmit(data: any, { reset }: any) {
-    console.log(data, formRef, reset);
+    // console.log(data, formRef, reset);
     navigate('/home');
   }
 
   return (
     <S.Conteiner>
       <S.ImagesContainer>
-        <img
-          src="https://i.pinimg.com/280x280_RS/cb/b2/80/cbb280fa8c687cf3b137df878bf82d08.jpg"
-          alt="ss"
-        />
+        <img src={user?.picture} alt="user" />
       </S.ImagesContainer>
 
       <div>

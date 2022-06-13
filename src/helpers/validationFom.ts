@@ -10,9 +10,9 @@ export async function validationForm(data: any, schema: any, formRef: any) {
 
     // Validation passed
     isSuccess = true;
+    formRef.current.setErrors([]);
   } catch (err) {
     console.log(err);
-
     const validationErrors = {};
 
     if (err instanceof Yup.ValidationError) {

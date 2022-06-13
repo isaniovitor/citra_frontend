@@ -18,6 +18,7 @@
     "isolatedModules": true, // ajuda que o código typescript seja entendido por outros transpiladores
     "jsx": "react-jsx", // Qual o tipo de código JSX que será gerado
     "noEmit": true, //  não gerar códigos javascript como código fonte
+    "noEmitOnError": true, // Não mostra os erros de typescript quando compila
     "skipLibCheck": true, // Pula a verificação de arquivos de declaração, isso economiza tempo de compilação.
 		"baseUrl": "./src",
     "paths": {

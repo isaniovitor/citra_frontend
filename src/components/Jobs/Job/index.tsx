@@ -18,11 +18,12 @@ function Job() {
       <S.JobDescription>
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>Pedreiro</label>
-        <div>
-          CVENGENHARIA Fortaleza - CE R$ 2,400,00 Fortaleza - CE R$ 2,400,00
-          Fortaleza - CE R$ 2,400,00
-        </div>
-        <div style={{ textAlign: 'end' }}>ler mais</div>
+        <p>
+          Necessário experiência mínima de 2 anos. Saber fazer desde a
+          construção (assentamento de tijolo) ate serviços de acabamento (pisos,
+          lajotas)...
+        </p>
+        <p style={{ textAlign: 'end' }}>ler mais</p>
       </S.JobDescription>
     </S.JobConteinar>
   );

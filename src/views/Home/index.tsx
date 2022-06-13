@@ -10,7 +10,7 @@ import * as S from './styles';
 
 function Home() {
   const { isLogged, user } = useAuth();
-  console.log(isLogged, user);
+  // console.log(isLogged, user);
 
   return (
     <S.Conteiner>

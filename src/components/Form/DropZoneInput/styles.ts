@@ -5,6 +5,8 @@ interface DropProps {
   isDragActive: boolean;
 }
 
+export const Container = styled.div``;
+
 export const DropConteiner = styled.div<DropProps>`
   display: flex;
   flex-direction: row;

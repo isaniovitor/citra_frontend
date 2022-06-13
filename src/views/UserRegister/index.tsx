@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
+import Checkbox from '../../components/Form/CheckBox';
+import ImageInput from '../../components/Form/ImageInput/ImageInput';
 import Input from '../../components/Form/Input';
 import { registerUserSchema } from '../../constants/schemas';
 import { useAuth } from '../../contexts/AuthContext';
@@ -15,23 +17,21 @@ function UserRegister() {
   const { userRegister } = useAuth();
 
   async function handleSubmit(data: any, { reset }: any) {
-    console.log(await validationForm(data, registerUserSchema, formRef));
+    console.log(data);
 
     if (await validationForm(data, registerUserSchema, formRef)) {
-      console.log('entrou');
-
       if (
         await userRegister({
-          NomeCompleto: data.name,
+          name: data.name,
           Email: data.email,
-          CEP: data.cep,
-          Senha: data.password,
-          Celular: data.fone,
-          CPF: data.cpf,
-          DataNasc: data.birthdate,
-          Foto: null,
-          Curriculo: null,
-          Descricao: 'teste',
+          cep: data.cep,
+          password: data.password,
+          fone: data.fone,
+          cpf: data.cpf,
+          birthdate: data.birthdate,
+          picture: data.picture,
+          cv: '',
+          description: '',
         })
       ) {
         navigate('/', { replace: true });
@@ -46,7 +46,11 @@ function UserRegister() {
   return (
     <S.Conteiner>
       <S.FormConteiner ref={formRef} onSubmit={handleSubmit}>
-        <S.IconConteiner />
+        {/* <S.IconConteiner /> */}
+
+        <S.ImageContainer style={{}}>
+          <ImageInput name="picture" />
+        </S.ImageContainer>
 
         <S.InputContainer>
           <Input name="name" label="Nome compleo" />
@@ -72,6 +76,20 @@ function UserRegister() {
               <Input name="cpf" label="CPF" />
               <Input name="birthdate" label="Data nascimento" type="date" />
             </S.ColInputContainer>
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+            }}
+          >
+            <Checkbox
+              name="privacy"
+              value="consent"
+              label="I agree with the privacy policy"
+            />
           </div>
         </S.InputContainer>
 
