@@ -14,7 +14,7 @@ export const Image = styled.img`
   width: 100%;
   height: 100%;
 
-  border-radius: 50%;
+  /* border-radius: 50%; */
 
   /* :hover {
     background-image: url('https://s3.amazonaws.com/cdn.freshdesk.com/data/helpdesk/attachments/production/60030620810/original/E2S_J6ufV5547kAGOv3W1FNNMoIFTnTnXA.png?1620400263');

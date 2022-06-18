@@ -10,7 +10,7 @@ export default {
     return api.get(url);
   },
 
-  async postUser(path: string, query: object) {
+  async post(path: string, query: object) {
     const url = `/${path}/`;
 
     // console.log(query);
@@ -18,27 +18,17 @@ export default {
     return api.post(url, query);
   },
 
-  // erro no nome aq
-  async postUpdateUserr(
-    path: string,
-    UserId: string | undefined,
-    query: UserData,
-  ) {
-    // const url = 'http://localhost:8000/api/posts/';
-    // axios
-    //   .post(url, form_data, {
-    //     headers: {
-    //       'content-type': 'multipart/form-data',
-    //     },
-    //   })
-    //   .then(res => {
-    //     console.log(res.data);
-    //   })
-    //   .catch(err => console.log(err));
-
-    const url = `/${path}/${UserId}/`;
+  async update(path: string, Id: string | undefined, query: object) {
+    const url = `/${path}/${Id}/`;
 
     // console.log(query);
     return api.put(url, query);
+  },
+
+  async delete(path: string, Id: string | undefined) {
+    const url = `/${path}/${Id}/`;
+
+    // console.log(query);
+    return api.delete(url);
   },
 };

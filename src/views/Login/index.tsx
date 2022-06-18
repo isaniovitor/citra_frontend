@@ -7,6 +7,7 @@ import Avatar from '../../components/animations/AnimatedAvatar';
 import Input from '../../components/Form/Input';
 import { singInUserSchema } from '../../constants/schemas';
 import { useAuth } from '../../contexts/AuthContext';
+import { useJob } from '../../contexts/JobContext';
 import { validationForm } from '../../helpers/validationFom';
 
 import * as S from './styles';
@@ -17,6 +18,7 @@ function Login() {
   const navigate = useNavigate();
   const formRef = useRef(null);
   const { signIn } = useAuth();
+  const { getJobs, jobs } = useJob();
 
   const { rive, RiveComponent } = useRive({
     src: '520-990-teddy-login-screen.riv',
@@ -81,6 +83,8 @@ function Login() {
     if (await validationForm(data, singInUserSchema, formRef)) {
       if (await signIn({ Email: data.email, password: data.password })) {
         navigate('/home', { replace: true });
+
+        // await getJobs();
         toast.success('Login feito com sucesso!');
       } else {
         toast.error('Falha ao fazer login!');

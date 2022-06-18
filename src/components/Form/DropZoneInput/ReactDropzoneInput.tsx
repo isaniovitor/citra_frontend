@@ -17,7 +17,7 @@ function ReactDropzoneInput({ name, label }: DropProps) {
   const [file, setFile] = useState<any>();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: 'application/pdf',
+    accept: { 'application/pdf': [] },
     onDrop: (onDropAcceptedFiles: any) => {
       if (inputRef.current) {
         inputRef.current.acceptedFiles = onDropAcceptedFiles;
@@ -66,7 +66,7 @@ function ReactDropzoneInput({ name, label }: DropProps) {
       <S.Input
         {...getInputProps()}
         type="file"
-        accept="application/pdf"
+        accept={{ 'application/pdf': [] }}
         ref={inputRef}
         multiple={false}
         // defaultValue={defaultValue}

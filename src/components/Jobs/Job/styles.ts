@@ -32,9 +32,12 @@ export const JobDescription = styled.div`
     font-weight: 600;
   }
 
-  p:last-child {
-    color: #2eacdc;
+  button:last-child {
+    text-align: end;
     cursor: pointer;
+
+    color: #2eacdc;
+    background-color: #fff;
 
     :hover {
       text-decoration: underline;

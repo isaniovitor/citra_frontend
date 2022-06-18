@@ -1,16 +1,25 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import Input from '../../components/Form/Input';
 import Jobs from '../../components/Jobs';
 import { useAuth } from '../../contexts/AuthContext';
+import { useJob } from '../../contexts/JobContext';
 import Carousel from './components/Carousel';
 
 import * as S from './styles';
 
 function Home() {
-  const { isLogged, user } = useAuth();
+  const { getJobs } = useJob();
   // console.log(isLogged, user);
+
+  useEffect(() => {
+    async function getJobData() {
+      await getJobs();
+    }
+
+    getJobData();
+  }, []);
 
   return (
     <S.Conteiner>
@@ -18,7 +27,9 @@ function Home() {
 
       <S.SearchMenuContainer>
         <input placeholder="Pesquise uma vaga" />
-        <button type="submit">Anunciar vaga</button>
+        <Link to="/registerJob">
+          <button type="submit">Anunciar vaga</button>
+        </Link>
       </S.SearchMenuContainer>
 
       <S.JobsSection>

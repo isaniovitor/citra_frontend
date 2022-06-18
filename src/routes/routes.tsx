@@ -5,6 +5,7 @@ import Layout from '../layout';
 import UserEditProfile from '../views/EditProfile';
 import Home from '../views/Home';
 import Login from '../views/Login';
+import RegisterJob from '../views/RegisterJob';
 import UserProfile from '../views/UserProfile';
 import UserRegister from '../views/UserRegister';
 import PrivateRoutes from './privateRoute';
@@ -40,6 +41,11 @@ const routes = [
           {
             path: '/editProfile',
             element: <UserEditProfile />,
+          },
+
+          {
+            path: '/registerJob',
+            element: <RegisterJob />,
           },
         ],
       },

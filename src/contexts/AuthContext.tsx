@@ -22,8 +22,8 @@ interface AuthContextState {
 }
 
 interface UserDataLogin {
-  Email: string;
-  password: string;
+  Email: string | undefined;
+  password: string | undefined;
 }
 
 const AuthContext = createContext<AuthContextState>({} as AuthContextState);
@@ -50,20 +50,20 @@ function AuthProvider({ children }: any) {
     //   password,
     // });
 
-    const response = await request.get('usuarios');
-    console.log(response);
+    const response = await request.get('users');
+    // console.log(response);
 
     // const { token, usuario } = response.data;
     // setUserToken(token);
     // const { data } = response.data;
     // console.log(response.data);
 
-    response.data.forEach((element: any) => {
+    response.data.results.forEach((element: any) => {
       if (element.Email === Email && element.password === password) {
         setUser(element);
         success = true;
 
-        localStorage.setItem('token', `${element.userId}`);
+        localStorage.setItem('token', `${[element.Email, element.password]}`);
         // api.defaults.headers.common.authorization = `Bearer ${element.userId}`;
       }
     });
@@ -113,17 +113,17 @@ function AuthProvider({ children }: any) {
       // data.append('description', description);
 
       try {
-        const response = await request.postUser('usuarios', dataForm);
+        const response = await request.post('users', dataForm);
 
         console.log(response.status);
 
         if (response.status >= 200 && response.status < 300) {
-          console.log('aq');
+          // console.log('aq');
           success = true;
         }
       } catch (err: any) {
         const { data } = err.response;
-        console.log(data);
+        // console.log(data);
 
         if (data.cpf) {
           data.cpf.forEach((element: any) => {
@@ -171,6 +171,8 @@ function AuthProvider({ children }: any) {
 
       // solution for the error: O dado submetido não é um arquivo. Certifique-se do tipo de codificação no formulário.
       // tirar cv e picture como obg
+      const token = localStorage.getItem('token');
+      console.log(token);
 
       if (cv !== undefined) data.append('cv', cv);
       if (picture !== undefined) data.append('picture', picture);
@@ -185,11 +187,7 @@ function AuthProvider({ children }: any) {
       data.append('description', description);
 
       try {
-        const response = await request.postUpdateUserr(
-          'usuarios',
-          userId,
-          data,
-        );
+        const response = await request.update('users', userId, data);
 
         if (response.status >= 200 && response.status < 300) {
           success = true;
@@ -203,6 +201,8 @@ function AuthProvider({ children }: any) {
     },
     [],
   );
+
+  // getCandidatetions
 
   return (
     <AuthContext.Provider

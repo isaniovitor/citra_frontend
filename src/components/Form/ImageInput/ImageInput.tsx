@@ -2,7 +2,7 @@ import { useField } from '@unform/core';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-import profile from '../../../assets/login/profile.png';
+import profile from '../../../assets/login/profile.jpg';
 
 import * as S from './styles';
 
@@ -20,7 +20,7 @@ function ImageInput({ name }: DropProps) {
   const [preview, setPreview] = useState(defaultValue);
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+    accept: { 'image/*': [] },
     onDrop: (onDropAcceptedFiles: any) => {
       if (inputRef.current) {
         inputRef.current.acceptedFiles = onDropAcceptedFiles;
