@@ -6,6 +6,8 @@ import UserEditProfile from '../views/EditProfile';
 import Home from '../views/Home';
 import Login from '../views/Login';
 import RegisterJob from '../views/RegisterJob';
+import UserCandidacies from '../views/UserCadidacies';
+import UserJobs from '../views/UserJobs';
 import UserProfile from '../views/UserProfile';
 import UserRegister from '../views/UserRegister';
 import PrivateRoutes from './privateRoute';
@@ -46,6 +48,16 @@ const routes = [
           {
             path: '/registerJob',
             element: <RegisterJob />,
+          },
+
+          {
+            path: '/userJobs',
+            element: <UserJobs />,
+          },
+
+          {
+            path: '/userCandidacies',
+            element: <UserCandidacies />,
           },
         ],
       },

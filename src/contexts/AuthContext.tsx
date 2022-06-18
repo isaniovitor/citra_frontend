@@ -123,7 +123,7 @@ function AuthProvider({ children }: any) {
         }
       } catch (err: any) {
         const { data } = err.response;
-        // console.log(data);
+        console.log(data);
 
         if (data.cpf) {
           data.cpf.forEach((element: any) => {

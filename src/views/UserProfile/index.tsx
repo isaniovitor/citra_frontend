@@ -58,11 +58,16 @@ function UserProfile() {
         </S.Description>
         <S.Menu>
           <Link to="/editProfile">
-            <button type="button">Editart perfil</button>
+            <button type="button">Editar perfil</button>
           </Link>
 
-          <button type="button">Minhas vagas</button>
-          <button type="button">Minhas Candidaturas</button>
+          <Link to="/userJobs">
+            <button type="button">Minhas vagas</button>
+          </Link>
+
+          <Link to="/userCandidacies">
+            <button type="button">Minhas Candidaturas</button>
+          </Link>
         </S.Menu>
       </div>
     </S.Conteiner>

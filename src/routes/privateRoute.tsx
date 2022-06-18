@@ -17,7 +17,7 @@ function PrivateRoutes() {
       ];
 
       if (await signIn({ Email: email, password })) {
-        console.log(location.pathname);
+        // console.log(location.pathname);
 
         navigate(`${location.pathname}`, { replace: true });
         // return <Outlet />;
@@ -36,7 +36,7 @@ function PrivateRoutes() {
     fetchData();
   }, []);
 
-  console.log(isLogged);
+  // console.log(isLogged);
   return !isLogged ? <Navigate to="/" /> : <Outlet />;
 }
 

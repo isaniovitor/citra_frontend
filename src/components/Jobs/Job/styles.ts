@@ -27,12 +27,53 @@ export const JobDescription = styled.div`
   width: 100%;
   flex-direction: column;
   /* background-color: aqua; */
-  label {
-    font-size: 20px;
-    font-weight: 600;
+  > div:first-child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    p {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    div {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+
+      button {
+        background-color: #fff;
+      }
+
+      img {
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+
+        padding: 3px;
+
+        :hover {
+          border-radius: 50%;
+          background-color: #c5c5c5c5;
+        }
+      }
+    }
+  }
+
+  > div:last-child {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    width: 100%;
   }
 
   button:last-child {
+    width: fit-content;
+
     text-align: end;
     cursor: pointer;
 

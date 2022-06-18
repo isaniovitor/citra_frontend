@@ -8,6 +8,8 @@ export const JobsConteinar = styled.div`
   justify-content: center;
 
   background-color: #fff;
+
+  margin-bottom: 10px;
 `;
 
 // Job description
@@ -15,6 +17,8 @@ export const JobDescription = styled.div`
   width: 100%;
 
   padding: 15px;
+  /* borderRight: '1px solid gray', */
+  border-left: 1px solid gray;
 `;
 
 export const Title = styled.h2`

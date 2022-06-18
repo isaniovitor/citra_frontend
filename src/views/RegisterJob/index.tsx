@@ -29,34 +29,35 @@ function RegisterJob() {
 
   const { userUpdate, user } = useAuth();
   const { jobRegister, jobUpdate } = useJob();
+  console.log(state);
 
   const jobInitialData = {
-    vacancyId: state.job ? state.job.vacancyId : '',
-    nameVacancy: state.job ? state.job.nameVacancy : '',
-    nameCompany: state.job ? state.job.nameCompany : '',
-    shifts: state.job
+    vacancyId: state ? state.job.vacancyId : '',
+    nameVacancy: state ? state.job.nameVacancy : '',
+    nameCompany: state ? state.job.nameCompany : '',
+    shifts: state
       ? shiftsOptions.filter(shift => {
           return shift.value === state.job.shifts;
         })
       : '',
-    fone: state.job ? state.job.fone : '',
-    cep: state.job ? state.job.cep : '',
-    salary: state.job ? state.job.salary : '',
-    picture: state.job ? state.job.picture : '',
+    fone: state ? state.job.fone : '',
+    cep: state ? state.job.cep : '',
+    salary: state ? state.job.salary : '',
+    picture: state ? state.job.picture : '',
     // ajeitar
-    typeRemuneration: state.job ? state.job.typeRemuneration : '',
-    description: state.job ? state.job.description : '',
+    typeRemuneration: state ? state.job.typeRemuneration : '',
+    description: state ? state.job.description : '',
   };
 
   async function handleSubmit(data: any, { reset }: any) {
     // schema e toast
     if (await validationForm(data, registerJobSchema, formRef)) {
       // if has a job in the state so user is editing
-      const apiRequest = state.job ? jobUpdate : jobRegister;
+      const apiRequest = state ? jobUpdate : jobRegister;
 
       if (
         await apiRequest({
-          vacancyId: state.job ? state.job.vacancyId : null,
+          vacancyId: state ? state.job.vacancyId : null,
           nameVacancy: data.nameVacancy,
           nameCompany: data.nameCompany,
           shifts: data.shifts,
@@ -66,15 +67,14 @@ function RegisterJob() {
           picture: data.picture,
           typeRemuneration: data.typeRemuneration,
           description: data.description,
+          userIdVacancy: user?.userId || '',
         })
       ) {
         toast.success(
-          `Trabalho ${state.job ? 'editado' : 'cadastrado'} com sucesso!`,
+          `Trabalho ${state ? 'editado' : 'cadastrado'} com sucesso!`,
         );
       } else {
-        toast.error(
-          `Falha ao ${state.job ? 'editadar' : 'cadastrar'}  Trabalho!`,
-        );
+        toast.error(`Falha ao ${state ? 'editadar' : 'cadastrar'}  Trabalho!`);
       }
     }
   }

@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import type { JobData } from '../../@types/job';
 import type { UserData } from '../../@types/user';
+import noData from '../../assets/noData.webp';
 import { applySchema } from '../../constants/schemas';
 import { useAuth } from '../../contexts/AuthContext';
 import { useJob } from '../../contexts/JobContext';
@@ -25,13 +26,17 @@ import * as S from './styles';
 function Jobs() {
   const formRef = useRef(null);
   const navigate = useNavigate();
-  const { jobs, jobDelete } = useJob();
+
+  const { jobs, jobDelete, applyToJob } = useJob();
+  const { user } = useAuth();
 
   // console.log('aq', jobs[0]);
   // const [j, setJ] = useState<JobData[]>(jobs);
 
   const [currentJob, setCurrentJob] = useState<JobData>();
-  console.log('aq', currentJob, jobs[0]);
+  const [sameUser, setSameUser] = useState(false);
+
+  // console.log('aq', currentJob, jobs[0]);
 
   async function handleSubmit(data: any, { reset }: any) {
     if (await validationForm(data, applySchema, formRef)) {
@@ -39,15 +44,16 @@ function Jobs() {
     }
   }
 
-  async function deleteJob() {
+  async function applyJob() {
     if (
-      await jobDelete({
-        vacancyId: currentJob?.vacancyId,
+      await applyToJob({
+        userID: user?.userId,
+        vacancyID: currentJob?.vacancyId,
       })
     ) {
-      toast.success('Trabalho deletado com sucesso!');
+      toast.success('Candidatura realizada com sucesso!');
     } else {
-      toast.error('Falha ao deletar trabalho!');
+      toast.error('Falha ao se candidatar!');
     }
   }
 
@@ -62,13 +68,13 @@ function Jobs() {
           <div
             style={{
               width: '100%',
-              borderRight: '1px solid gray',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '10px',
               padding: '15px',
+              marginBottom: '30px',
             }}
           >
             {jobs.length > 0 &&
@@ -76,7 +82,7 @@ function Jobs() {
                 return (
                   <Job
                     job={job}
-                    key={job.vacancyId}
+                    key={Math.floor(Math.random() * 100)}
                     currentJob={currentJob}
                     setCurrentJob={setCurrentJob}
                   />
@@ -129,30 +135,33 @@ function Jobs() {
               {/* <h1>oi</h1> */}
 
               {/* <h1>oi</h1> */}
-              <button
-                type="button"
-                onClick={() => {
-                  navigate('/registerJob', {
-                    state: { job: currentJob },
-                  });
-                }}
-              >
-                Editar
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  deleteJob();
-                }}
-              >
-                Deletar
-              </button>
-              <button type="submit">Candidatar-se</button>
+
+              {user?.userId !== currentJob?.userIdVacancy ? (
+                <button
+                  type="submit"
+                  disabled={user?.userId === currentJob?.userIdVacancy}
+                  onClick={() => {
+                    applyJob();
+                  }}
+                >
+                  Candidatar-se
+                </button>
+              ) : (
+                <span className="text-danger" style={{ paddingTop: '10px' }}>
+                  Não se pode candidatar em vagas que voce criou!
+                </span>
+              )}
             </S.FormConteiner>
           </S.JobDescription>
         </>
       ) : (
-        <div>carregando</div>
+        <div>
+          <img
+            src={noData}
+            alt=""
+            style={{ width: '1000px', height: '1000px' }}
+          />
+        </div>
       )}
     </S.JobsConteinar>
   );

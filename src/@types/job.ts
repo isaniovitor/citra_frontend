@@ -9,4 +9,5 @@ export interface JobData {
   picture: string;
   typeRemuneration: string;
   description: string;
+  userIdVacancy: string;
 }
