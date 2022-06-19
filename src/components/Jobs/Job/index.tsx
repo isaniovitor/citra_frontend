@@ -11,22 +11,32 @@ import type { JobData } from '../../../@types/job';
 import deleteIcon from '../../../assets/delete.svg';
 import editIcon from '../../../assets/edit.svg';
 import noImage from '../../../assets/login/profile.jpg';
+import { useAuth } from '../../../contexts/AuthContext';
 import { useJob } from '../../../contexts/JobContext';
 
 import * as S from './styles';
 
-interface JobsContextState {
+interface JobContextState {
   job: JobData;
   currentJob: JobData;
   setCurrentJob: Dispatch<SetStateAction<JobData>>;
 }
 
-function Job({ job, currentJob, setCurrentJob }: JobsContextState) {
+function Job({ job, currentJob, setCurrentJob }: JobContextState) {
   const location = useLocation();
   const navigate = useNavigate();
   const isJobOwner = location.pathname === '/userJobs';
 
-  const { jobs, jobDelete, applyToJob } = useJob();
+  const { user } = useAuth();
+  const { jobs, jobDelete, getJobs, getUserJobs } = useJob();
+
+  // useEffect(() => {
+  //   async function getJobData() {
+  //     // await getJobs();
+  //     await getUserCandidacies({ userID: user?.userId, currentJobs: jobs });
+  //     await getUserJobs({ userID: user?.userId, currentJobs: jobs });
+  //     await getCandidacies();
+  //   }
 
   async function deleteJob() {
     if (
@@ -34,6 +44,9 @@ function Job({ job, currentJob, setCurrentJob }: JobsContextState) {
         vacancyId: currentJob?.vacancyId,
       })
     ) {
+      await getJobs();
+      await getUserJobs({ userID: user?.userId, currentJobs: jobs });
+
       toast.success('Trabalho deletado com sucesso!');
     } else {
       toast.error('Falha ao deletar trabalho!');

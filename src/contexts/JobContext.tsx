@@ -43,6 +43,8 @@ interface JobContextState {
   }: JobData): Promise<boolean>;
   jobDelete({ vacancyId }: deleteProps): Promise<boolean>;
   jobs: JobData[] | [];
+  userCandidacies: JobData[] | [];
+  userJobs: JobData[] | [];
 }
 
 interface deleteProps {
@@ -53,6 +55,8 @@ const JobContext = createContext<JobContextState>({} as JobContextState);
 
 function JobProvider({ children }: any) {
   const [jobs, setJobs] = useState<JobData[]>([]);
+  const [userCandidacies, setUserCandidacies] = useState<JobData[]>([]);
+  const [userJobs, setUserJobs] = useState<JobData[]>([]);
 
   const getJobs = useCallback(async () => {
     let success = false;
@@ -102,9 +106,7 @@ function JobProvider({ children }: any) {
             },
           );
 
-          const userJobs = currentJobs.filter(job => {
-            console.log(userJobsIds, job.vacancyId);
-
+          const appliedjobs = currentJobs.filter(job => {
             return userJobsIds.includes(job.vacancyId);
           });
 
@@ -122,7 +124,8 @@ function JobProvider({ children }: any) {
 
           // console.log(currentJobs, userJobs);
 
-          setJobs(userJobs);
+          console.log('entoru Candidacies', appliedjobs);
+          setUserCandidacies(appliedjobs);
           success = true;
         }
 
@@ -152,13 +155,14 @@ function JobProvider({ children }: any) {
   // n pe calllback
   const getUserJobs = useCallback(
     async ({ userID, currentJobs }: CandidacyData) => {
-      const userJobs = currentJobs.filter((job: JobData) => {
+      const newUserJobs = currentJobs.filter((job: JobData) => {
         console.log(job.userIdVacancy, userID);
 
         return job.userIdVacancy === userID;
       });
 
-      setJobs(userJobs);
+      console.log('entoru userJob', newUserJobs);
+      setUserJobs(newUserJobs);
 
       // const response = await api.post('/sessions', {
       //   username,
@@ -337,6 +341,8 @@ function JobProvider({ children }: any) {
         jobUpdate,
         jobDelete,
         jobs,
+        userCandidacies,
+        userJobs,
       }}
     >
       {children}

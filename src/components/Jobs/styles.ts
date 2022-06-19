@@ -68,4 +68,13 @@ export const FormConteiner = styled(unform)`
     background-color: #2eacdc;
     color: #fff;
   }
+
+  a {
+    text-decoration: none !important;
+    color: #2eacdc !important;
+    :hover {
+      text-decoration: underline !important;
+      color: #2eacdc;
+    }
+  }
 `;

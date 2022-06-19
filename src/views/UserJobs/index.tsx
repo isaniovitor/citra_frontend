@@ -9,19 +9,21 @@ import { useJob } from '../../contexts/JobContext';
 import * as S from './styles';
 
 function UserJobs() {
-  const { getUserJobs, jobs } = useJob();
+  const { getUserJobs, userJobs } = useJob();
+  // const { jobs, userCandidacies, userJobs, applyToJob, getJobs } = useJob();
+
   const { userUpdate, user } = useAuth();
 
   // console.log(isLogged, user);
 
-  useEffect(() => {
-    async function getUserJobData() {
-      console.log('aq', user?.userId);
-      await getUserJobs({ userID: user?.userId, currentJobs: jobs });
-    }
+  // useEffect(() => {
+  //   async function getUserJobData() {
+  //     console.log('aq', user?.userId);
+  //     await getUserJobs({ userID: user?.userId, currentJobs: jobs });
+  //   }
 
-    getUserJobData();
-  }, []);
+  //   getUserJobData();
+  // }, []);
 
   return (
     <S.Conteiner>
@@ -39,7 +41,7 @@ function UserJobs() {
           Filtros
         </div>
         {/* filters */}
-        <Jobs />
+        <Jobs jobsList={userJobs} />
       </S.JobsSection>
     </S.Conteiner>
   );

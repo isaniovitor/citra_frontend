@@ -28,7 +28,7 @@ function RegisterJob() {
   const { state } = useLocation();
 
   const { userUpdate, user } = useAuth();
-  const { jobRegister, jobUpdate } = useJob();
+  const { jobRegister, jobUpdate, getJobs } = useJob();
   console.log(state);
 
   const jobInitialData = {
@@ -70,6 +70,9 @@ function RegisterJob() {
           userIdVacancy: user?.userId || '',
         })
       ) {
+        await getJobs();
+
+        navigate('/userJobs', { replace: true });
         toast.success(
           `Trabalho ${state ? 'editado' : 'cadastrado'} com sucesso!`,
         );

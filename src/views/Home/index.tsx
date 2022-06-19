@@ -4,22 +4,38 @@ import { Link, useNavigate } from 'react-router-dom';
 import Input from '../../components/Form/Input';
 import Jobs from '../../components/Jobs';
 import { useAuth } from '../../contexts/AuthContext';
+import { useCandidacy } from '../../contexts/CandicacyContext';
 import { useJob } from '../../contexts/JobContext';
 import Carousel from './components/Carousel';
 
 import * as S from './styles';
 
 function Home() {
-  const { getJobs } = useJob();
+  const { jobs, getJobs, getUserCandidacies, getUserJobs } = useJob();
+  const { user } = useAuth();
+  // const { jobs, userCandidacies, userJobs, applyToJob, getJobs } = useJob();
+
+  const { getCandidacies } = useCandidacy();
+
   // console.log(isLogged, user);
+  // useEffect(() => {
+  //   async function getJobData() {
+  //     await getJobs();
+  //   }
 
-  useEffect(() => {
-    async function getJobData() {
-      await getJobs();
-    }
+  //   getJobData();
+  // }, []);
 
-    getJobData();
-  }, []);
+  // useEffect(() => {
+  //   async function getJobData() {
+  //     // await getJobs();
+  //     await getUserCandidacies({ userID: user?.userId, currentJobs: jobs });
+  //     await getUserJobs({ userID: user?.userId, currentJobs: jobs });
+  //     await getCandidacies();
+  //   }
+
+  //   getJobData();
+  // }, [jobs]);
 
   return (
     <S.Conteiner>
@@ -46,7 +62,7 @@ function Home() {
           Filtros
         </div>
         {/* filters */}
-        <Jobs />
+        <Jobs jobsList={jobs} />
       </S.JobsSection>
     </S.Conteiner>
   );

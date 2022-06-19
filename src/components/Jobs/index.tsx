@@ -8,14 +8,22 @@ import {
 } from 'react';
 // import ReactInputMask from 'react-input-mask';
 import ReactInputMask from 'react-input-mask';
-import { Navigate, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import {
+  Navigate,
+  Outlet,
+  useNavigate,
+  useLocation,
+  Link,
+} from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
+import type { CandidacyData } from '../../@types/candidacy';
 import type { JobData } from '../../@types/job';
 import type { UserData } from '../../@types/user';
 import noData from '../../assets/noData.webp';
 import { applySchema } from '../../constants/schemas';
 import { useAuth } from '../../contexts/AuthContext';
+import { useCandidacy } from '../../contexts/CandicacyContext';
 import { useJob } from '../../contexts/JobContext';
 import { validationForm } from '../../helpers/validationFom';
 import ReactDropzoneInput from '../Form/DropZoneInput/ReactDropzoneInput';
@@ -23,19 +31,24 @@ import Job from './Job';
 
 import * as S from './styles';
 
-function Jobs() {
+interface JobsContextState {
+  jobsList: JobData[] | [];
+}
+
+function Jobs({ jobsList }: JobsContextState) {
   const formRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const { jobs, jobDelete, applyToJob } = useJob();
+  const { jobs, getUserCandidacies, applyToJob } = useJob();
+  const { candidacies, deleteCadidacy, getCandidacies } = useCandidacy();
   const { user } = useAuth();
 
   // console.log('aq', jobs[0]);
   // const [j, setJ] = useState<JobData[]>(jobs);
 
   const [currentJob, setCurrentJob] = useState<JobData>();
-  const [sameUser, setSameUser] = useState(false);
-
+  const [alreadyApplied, setAlreadyApplied] = useState<CandidacyData[]>([]);
   // console.log('aq', currentJob, jobs[0]);
 
   async function handleSubmit(data: any, { reset }: any) {
@@ -51,19 +64,52 @@ function Jobs() {
         vacancyID: currentJob?.vacancyId,
       })
     ) {
+      await getCandidacies();
+      await getUserCandidacies({ userID: user?.userId, currentJobs: jobs });
       toast.success('Candidatura realizada com sucesso!');
     } else {
       toast.error('Falha ao se candidatar!');
     }
   }
 
+  async function deleteCandidacy() {
+    if (
+      await deleteCadidacy({
+        userID: user?.userId,
+        vacancyID: currentJob?.vacancyId,
+        currentCandidacies: candidacies,
+      })
+    ) {
+      await getCandidacies();
+      await getUserCandidacies({ userID: user?.userId, currentJobs: jobs });
+      toast.success('deletação realizada com sucesso!');
+    } else {
+      toast.error('Falha ao deletar!');
+    }
+  }
+
+  function isAlreadyApplied() {
+    const count = alreadyApplied.filter(candidacy => {
+      return (
+        candidacy.userID === user?.userId &&
+        candidacy.vacancyID === currentJob?.vacancyId
+      );
+    });
+
+    return count.length;
+  }
+
   useEffect(() => {
-    setCurrentJob(jobs[0]);
-  }, [jobs]);
+    setCurrentJob(jobsList[0]);
+  }, [jobsList]);
+
+  useEffect(() => {
+    setAlreadyApplied(candidacies);
+  }, [candidacies]);
 
   return (
     <S.JobsConteinar>
-      {jobs.length > 0 ? (
+      {jobsList.length > 0 ? (
         <>
           <div
             style={{
@@ -77,12 +123,12 @@ function Jobs() {
               marginBottom: '30px',
             }}
           >
-            {jobs.length > 0 &&
-              jobs.map(job => {
+            {jobsList.length > 0 &&
+              jobsList.map(job => {
                 return (
                   <Job
                     job={job}
-                    key={Math.floor(Math.random() * 100)}
+                    key={job.vacancyId}
                     currentJob={currentJob}
                     setCurrentJob={setCurrentJob}
                   />
@@ -137,15 +183,41 @@ function Jobs() {
               {/* <h1>oi</h1> */}
 
               {user?.userId !== currentJob?.userIdVacancy ? (
-                <button
-                  type="submit"
-                  disabled={user?.userId === currentJob?.userIdVacancy}
-                  onClick={() => {
-                    applyJob();
-                  }}
-                >
-                  Candidatar-se
-                </button>
+                <div>
+                  {isAlreadyApplied() === 0 ? (
+                    <button
+                      type="submit"
+                      disabled={user?.userId === currentJob?.userIdVacancy}
+                      onClick={() => {
+                        applyJob();
+                      }}
+                    >
+                      Candidatar-se
+                    </button>
+                  ) : (
+                    <div>
+                      {location.pathname === '/userCandidacies' ? (
+                        <button
+                          type="button"
+                          disabled={user?.userId === currentJob?.userIdVacancy}
+                          onClick={() => {
+                            deleteCandidacy();
+                          }}
+                        >
+                          Cancelar
+                        </button>
+                      ) : (
+                        <Link to="/userCandidacies">
+                          <div className="link">
+                            <span style={{ paddingTop: '10px' }}>
+                              Já se candidatou! Ir para candidaturas
+                            </span>
+                          </div>
+                        </Link>
+                      )}
+                    </div>
+                  )}
+                </div>
               ) : (
                 <span className="text-danger" style={{ paddingTop: '10px' }}>
                   Não se pode candidatar em vagas que voce criou!
