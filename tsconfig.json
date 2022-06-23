@@ -13,6 +13,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "allowJs": true,
+    "compileOnSave": false,
     "strict": true, // Verificações de tipagem
     "allowSyntheticDefaultImports": true, // import * as React from 'react'; => import React from 'react'
     "esModuleInterop": true, // junto com o "allowSyntheticDefaultImports" para usar os imports

@@ -30,18 +30,10 @@ function Job({ job, currentJob, setCurrentJob }: JobContextState) {
   const { user } = useAuth();
   const { jobs, jobDelete, getJobs, getUserJobs } = useJob();
 
-  // useEffect(() => {
-  //   async function getJobData() {
-  //     // await getJobs();
-  //     await getUserCandidacies({ userID: user?.userId, currentJobs: jobs });
-  //     await getUserJobs({ userID: user?.userId, currentJobs: jobs });
-  //     await getCandidacies();
-  //   }
-
   async function deleteJob() {
     if (
       await jobDelete({
-        vacancyId: currentJob?.vacancyId,
+        vacancyId: job?.vacancyId,
       })
     ) {
       await getJobs();
@@ -54,7 +46,7 @@ function Job({ job, currentJob, setCurrentJob }: JobContextState) {
   }
 
   return (
-    <S.JobConteinar>
+    <S.JobConteinar isActive={job === currentJob}>
       <img src={job.picture || noImage} alt="" />
 
       <S.JobDescription>
@@ -67,7 +59,7 @@ function Job({ job, currentJob, setCurrentJob }: JobContextState) {
                 type="button"
                 onClick={() => {
                   navigate('/registerJob', {
-                    state: { job: currentJob },
+                    state: { job },
                   });
                 }}
               >

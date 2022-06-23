@@ -26,34 +26,16 @@ function UserProfile() {
       <div>
         <S.Description>
           <div>
-            <h1>Joaos</h1>
-            <p>Mestre de obras</p>
+            <h1>{user?.name}</h1>
 
-            <p>
-              Trabalho a 4 anos como Pedreiro e a 2 anos como Mestre de Obras.
-            </p>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+              <p>{user?.Email}</p>
+              <p>{user?.fone}</p>
+              <p>{user?.birthdate}</p>
+            </div>
 
-            <p>Mestre de obras</p>
-
-            <p>
-              Trabalho a 4 anos como Pedreiro e a 2 anos como Mestre de Obras.
-            </p>
-
-            <p>Mestre de obras</p>
-
-            <p>
-              Trabalho a 4 anos como Pedreiro e a 2 anos como Mestre de Obras.
-            </p>
-            <p>Mestre de obras</p>
-
-            <p>
-              Trabalho a 4 anos como Pedreiro e a 2 anos como Mestre de Obras.
-            </p>
-            <p>Mestre de obras</p>
-
-            <p>
-              Trabalho a 4 anos como Pedreiro e a 2 anos como Mestre de Obras.
-            </p>
+            <h6>Descrição</h6>
+            <p>{user?.description}</p>
           </div>
         </S.Description>
         <S.Menu>
@@ -62,11 +44,11 @@ function UserProfile() {
           </Link>
 
           <Link to="/userJobs">
-            <button type="button">Minhas vagas</button>
+            <button type="button">Vagas</button>
           </Link>
 
           <Link to="/userCandidacies">
-            <button type="button">Minhas Candidaturas</button>
+            <button type="button">Candidaturas</button>
           </Link>
         </S.Menu>
       </div>

@@ -43,6 +43,7 @@ function Login() {
   // };
 
   const setHangUp = hangUp => {
+    // eslint-disable-next-line no-unused-expressions
     stateHandUp && (stateHandUp.value = hangUp);
   };
 

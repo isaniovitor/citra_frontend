@@ -37,10 +37,10 @@ function Checkbox({ name, value, label, ...rest }: InputProps) {
          * you can do so here. In this example, when resetting the form,
          * the checkbox goes back to its initial state.
          */
-        ref.current.checked = defaultChecked;
+        // ref.current.checked = defaultChecked;
       },
-      setValue: (ref, value) => {
-        ref.current.checked = value;
+      setValue: (ref, newValue) => {
+        // ref.current.checked = newValue;
       },
     });
   }, [defaultValue, fieldName, registerField, defaultChecked]);

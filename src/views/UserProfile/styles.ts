@@ -18,8 +18,12 @@ export const Conteiner = styled.div`
 
     padding-top: 15px;
 
-    > div {
-      width: 50%;
+    > div:first-child {
+      width: 100%;
+    }
+
+    > div:last-child {
+      width: 300px;
     }
   }
 `;

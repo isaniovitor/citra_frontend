@@ -4,8 +4,8 @@ import type { UserData } from '../@types/user';
 import api from './api';
 
 export default {
-  async get(path: string) {
-    const url = `/${path}/`;
+  async get(path: string, query?: string) {
+    const url = `/${path}/${query || ''}`;
 
     return api.get(url);
   },

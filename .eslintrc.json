@@ -28,6 +28,7 @@
       "eslint-plugin-import-helpers"
     ],
     "rules": {
+      "no-param-reassign": [2, { "props": false }],
       "prettier/prettier": "error",
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",

@@ -1,3 +1,6 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-useless-return */
+
 import {
   createContext,
   SetStateAction,
@@ -9,6 +12,7 @@ import { toast } from 'react-toastify';
 
 import type { CandidacyData } from '../@types/candidacy';
 import type { JobData } from '../@types/job';
+import type { UserData } from '../@types/user';
 import api from '../services/api';
 import request from '../services/request';
 import { useAuth } from './AuthContext';
@@ -18,6 +22,10 @@ interface JobContextState {
   getJobs(): Promise<boolean>;
   getUserCandidacies({ userID, currentJobs }: CandidacyData): Promise<boolean>;
   getUserJobs({ userID, currentJobs }: CandidacyData): void;
+  getCandidates(
+    vacancyId: string | undefined,
+    candidacies: CandidacyData[] | [],
+  ): Promise<boolean>;
   applyToJob({ userID, vacancyID }: CandidacyData): Promise<boolean>;
   jobUpdate({
     vacancyId,
@@ -45,6 +53,7 @@ interface JobContextState {
   jobs: JobData[] | [];
   userCandidacies: JobData[] | [];
   userJobs: JobData[] | [];
+  candidates: UserData[] | [];
 }
 
 interface deleteProps {
@@ -57,6 +66,7 @@ function JobProvider({ children }: any) {
   const [jobs, setJobs] = useState<JobData[]>([]);
   const [userCandidacies, setUserCandidacies] = useState<JobData[]>([]);
   const [userJobs, setUserJobs] = useState<JobData[]>([]);
+  const [candidates, setCandidates] = useState<UserData[] | []>([]);
 
   const getJobs = useCallback(async () => {
     let success = false;
@@ -124,7 +134,7 @@ function JobProvider({ children }: any) {
 
           // console.log(currentJobs, userJobs);
 
-          console.log('entoru Candidacies', appliedjobs);
+          // console.log('entoru Candidacies', appliedjobs);
           setUserCandidacies(appliedjobs);
           success = true;
         }
@@ -152,22 +162,66 @@ function JobProvider({ children }: any) {
     [],
   );
 
-  // n pe calllback
-  const getUserJobs = useCallback(
-    async ({ userID, currentJobs }: CandidacyData) => {
-      const newUserJobs = currentJobs.filter((job: JobData) => {
-        console.log(job.userIdVacancy, userID);
+  const getUserJobs = ({ userID, currentJobs }: CandidacyData) => {
+    const newUserJobs = currentJobs.filter((job: JobData) => {
+      // console.log(job.userIdVacancy, userID);
 
-        return job.userIdVacancy === userID;
+      return job.userIdVacancy === userID;
+    });
+
+    // console.log('entoru userJob', newUserJobs);
+    setUserJobs(newUserJobs);
+
+    // const response = await api.post('/sessions', {
+    //   username,
+    //   password,
+    // });
+  };
+
+  const getCandidates = useCallback(
+    async (vacancyId: string, candidacies: CandidacyData[] | []) => {
+      let success = false;
+
+      const newCandidates = candidacies.filter((candidacy: CandidacyData) => {
+        // console.log(candidacy);
+        // console.log(candidacy.vacancyID, vacancyId);
+
+        if (candidacy.vacancyID === vacancyId) {
+          return candidacy.userID;
+        }
+
+        return null;
       });
 
-      console.log('entoru userJob', newUserJobs);
-      setUserJobs(newUserJobs);
+      if (newCandidates.length === 0) {
+        return setCandidates([]);
+      }
+
+      try {
+        newCandidates.map(async candidate => {
+          const response = await request.get('users', candidate.userID);
+
+          if (response.status >= 200 && response.status < 300) {
+            console.log(response.data);
+
+            setCandidates([...candidates, response.data]);
+          }
+
+          // console.log('candidatos', candidates);
+          success = true;
+        });
+      } catch (err: any) {
+        console.log(err);
+      }
+
+      // setCandidates(mewCandidates);
 
       // const response = await api.post('/sessions', {
       //   username,
       //   password,
       // });
+
+      return success;
     },
     [],
   );
@@ -184,7 +238,7 @@ function JobProvider({ children }: any) {
         const response = await request.post('candidacy', dataForm);
 
         if (response.status >= 200 && response.status < 300) {
-          console.log(response.status);
+          // console.log(response.status);
           success = true;
         }
 
@@ -229,7 +283,7 @@ function JobProvider({ children }: any) {
 
       try {
         const response = await request.post('vacancy', dataForm);
-        console.log(response.status);
+        // console.log(response.status);
 
         if (response.status >= 200 && response.status < 300) {
           // console.log('aq');
@@ -245,7 +299,6 @@ function JobProvider({ children }: any) {
     [],
   );
 
-  // getUserJobs
   const jobUpdate = useCallback(
     async ({
       vacancyId,
@@ -295,14 +348,14 @@ function JobProvider({ children }: any) {
 
   const jobDelete = useCallback(async ({ vacancyId }: deleteProps) => {
     let success = false;
-    console.log(vacancyId);
+    // console.log(vacancyId);
 
     try {
       const response = await request.delete('vacancy', vacancyId);
 
       if (response.status >= 200 && response.status < 300) {
         success = true;
-        console.log(response.data);
+        // console.log(response.data);
       }
 
       const candidacyResponse = await request.get('candidacy');
@@ -316,7 +369,7 @@ function JobProvider({ children }: any) {
               candidacy.candidaturaId,
             );
 
-            console.log(deleteCandidacyResponse);
+            // console.log(deleteCandidacyResponse);
           }
 
           return null;
@@ -336,6 +389,7 @@ function JobProvider({ children }: any) {
         getJobs,
         getUserCandidacies,
         getUserJobs,
+        getCandidates,
         applyToJob,
         jobRegister,
         jobUpdate,
@@ -343,6 +397,7 @@ function JobProvider({ children }: any) {
         jobs,
         userCandidacies,
         userJobs,
+        candidates,
       }}
     >
       {children}
