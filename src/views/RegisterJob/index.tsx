@@ -45,7 +45,11 @@ function RegisterJob() {
     salary: state ? state.job.salary : '',
     picture: state ? state.job.picture : '',
     // ajeitar
-    typeRemuneration: state ? state.job.typeRemuneration : '',
+    typeHires: state
+      ? typeRemunerationOptions.filter(remuneration => {
+          return remuneration.value === state.job.typeHires;
+        })
+      : '',
     description: state ? state.job.description : '',
   };
 
@@ -65,7 +69,7 @@ function RegisterJob() {
           cep: data.cep,
           salary: data.salary,
           picture: data.picture,
-          typeRemuneration: data.typeRemuneration,
+          typeHires: data.typeHires,
           description: data.description,
           userIdVacancy: user?.userId || '',
         })
@@ -113,7 +117,7 @@ function RegisterJob() {
 
             <div>
               <Select
-                name="typeRemuneration"
+                name="typeHires"
                 label="Tipo de remuneração"
                 placeholder=""
                 noOptionMessage="Sem opções"
@@ -133,21 +137,6 @@ function RegisterJob() {
               <Input name="cep" label="CEP" mask="99999-999" />
             </div>
           </S.InputContainer>
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            flex: '1',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-          }}
-        >
-          <Checkbox
-            name="cv"
-            value="consent"
-            label="Desejo que o currículo seja anexado"
-          />
         </div>
 
         <div>

@@ -87,6 +87,6 @@ export const registerJobSchema = Yup.object().shape({
     .test('completo', 'prencha com número positivo', function test(item) {
       return Number(item) > 0;
     }),
-  typeRemuneration: Yup.string().required('Campo Obrigatório'),
+  typeHires: Yup.string().required('Campo Obrigatório'),
   description: Yup.string().required('Campo Obrigatório'),
 });

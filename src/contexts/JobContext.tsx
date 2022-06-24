@@ -1,13 +1,8 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-useless-return */
 
-import {
-  createContext,
-  SetStateAction,
-  useCallback,
-  useContext,
-  useState,
-} from 'react';
+import type { Dispatch, SetStateAction } from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import type { CandidacyData } from '../@types/candidacy';
@@ -20,6 +15,7 @@ import { useAuth } from './AuthContext';
 
 interface JobContextState {
   getJobs(): Promise<boolean>;
+  getFiltedJobs(data: any): Promise<boolean>;
   getUserCandidacies({ userID, currentJobs }: CandidacyData): Promise<boolean>;
   getUserJobs({ userID, currentJobs }: CandidacyData): void;
   getCandidates(
@@ -35,7 +31,7 @@ interface JobContextState {
     cep,
     salary,
     picture,
-    typeRemuneration,
+    typeHires,
     description,
   }: JobData): Promise<boolean>;
   jobRegister({
@@ -45,12 +41,14 @@ interface JobContextState {
     cep,
     salary,
     picture,
-    typeRemuneration,
+    typeHires,
     description,
     userIdVacancy,
   }: JobData): Promise<boolean>;
   jobDelete({ vacancyId }: deleteProps): Promise<boolean>;
+  setFiltedJobs: Dispatch<SetStateAction<JobData[]>>;
   jobs: JobData[] | [];
+  filtedJobs: JobData[] | [];
   userCandidacies: JobData[] | [];
   userJobs: JobData[] | [];
   candidates: UserData[] | [];
@@ -64,20 +62,13 @@ const JobContext = createContext<JobContextState>({} as JobContextState);
 
 function JobProvider({ children }: any) {
   const [jobs, setJobs] = useState<JobData[]>([]);
+  const [filtedJobs, setFiltedJobs] = useState<JobData[]>([]);
   const [userCandidacies, setUserCandidacies] = useState<JobData[]>([]);
   const [userJobs, setUserJobs] = useState<JobData[]>([]);
   const [candidates, setCandidates] = useState<UserData[] | []>([]);
 
   const getJobs = useCallback(async () => {
     let success = false;
-
-    // const response = await api.post('/sessions', {
-    //   username,
-    //   password,
-    // });
-
-    // console.log(response);
-    // console.log(response.data.results);
 
     try {
       const response = await request.get('vacancy');
@@ -91,11 +82,33 @@ function JobProvider({ children }: any) {
     }
 
     return success;
+  }, []);
 
-    // console.log('aqa');
-    // deu ruim
-    // alert('ruim');
-    // toast.error('Falha ao fazer login!');
+  // mudar toast pra filtros
+  const getFiltedJobs = useCallback(async (data?: any) => {
+    let success = false;
+    console.log(data);
+
+    try {
+      const response = await request.getFiltedJobs('vacancy', data);
+      console.log(response);
+
+      if (response.status >= 200 && response.status < 300) {
+        setFiltedJobs(response.data.results);
+
+        if (response.data.results.length === 0) {
+          success = true;
+          toast.error('Vagas com esses filtros não encontrada!');
+        } else {
+          success = false;
+          toast.success('Filtragem feita!');
+        }
+      }
+    } catch (err: any) {
+      console.log(err);
+    }
+
+    return success;
   }, []);
 
   const getUserCandidacies = useCallback(
@@ -120,43 +133,14 @@ function JobProvider({ children }: any) {
             return userJobsIds.includes(job.vacancyId);
           });
 
-          // const ne = currentJobs.filter((job: JobData) => {
-          //   // console.log('job', job);
-
-          //   // if (userJobs.includes(job)) {
-          //   //   console.log('job', job);
-
-          //   return userJobs.filter(job.vacancyId ===);
-          //   // }
-
-          //   return false;
-          // });
-
-          // console.log(currentJobs, userJobs);
-
-          // console.log('entoru Candidacies', appliedjobs);
           setUserCandidacies(appliedjobs);
           success = true;
         }
-
-        // setJobs(userJobs);
 
         return success;
       } catch (err: any) {
         console.log(err);
         return success;
-
-        // console.log(response.data.results);
-
-        // const { token, usuario } = response.data;
-        // setUserToken(token);
-        // const { data } = response.data;
-        // console.log(response.data);
-
-        // console.log('aqa');
-        // deu ruim
-        // alert('ruim');
-        // toast.error('Falha ao fazer login!');
       }
     },
     [],
@@ -178,6 +162,7 @@ function JobProvider({ children }: any) {
     // });
   };
 
+  // deveria estar em candiday
   const getCandidates = useCallback(
     async (vacancyId: string, candidacies: CandidacyData[] | []) => {
       let success = false;
@@ -226,6 +211,7 @@ function JobProvider({ children }: any) {
     [],
   );
 
+  // deveria estar em candiday
   const applyToJob = useCallback(
     async ({ userID, vacancyID }: CandidacyData) => {
       const dataForm = new FormData();
@@ -260,7 +246,7 @@ function JobProvider({ children }: any) {
       cep,
       salary,
       picture,
-      typeRemuneration,
+      typeHires,
       description,
       userIdVacancy,
     }: JobData) => {
@@ -277,7 +263,7 @@ function JobProvider({ children }: any) {
       dataForm.append('fone', fone);
       dataForm.append('cep', cep);
       dataForm.append('salary', salary);
-      dataForm.append('typeRemuneration', typeRemuneration);
+      dataForm.append('typeHires', typeHires);
       dataForm.append('description', description);
       dataForm.append('userIdVacancy', userIdVacancy);
 
@@ -309,7 +295,7 @@ function JobProvider({ children }: any) {
       cep,
       salary,
       picture,
-      typeRemuneration,
+      typeHires,
       description,
     }: JobData) => {
       let success = false;
@@ -327,7 +313,7 @@ function JobProvider({ children }: any) {
       dataForm.append('fone', fone);
       dataForm.append('cep', cep);
       dataForm.append('salary', salary);
-      dataForm.append('typeRemuneration', typeRemuneration);
+      dataForm.append('typeHires', typeHires);
       dataForm.append('description', description);
 
       try {
@@ -387,6 +373,7 @@ function JobProvider({ children }: any) {
       // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
         getJobs,
+        getFiltedJobs,
         getUserCandidacies,
         getUserJobs,
         getCandidates,
@@ -394,7 +381,9 @@ function JobProvider({ children }: any) {
         jobRegister,
         jobUpdate,
         jobDelete,
+        setFiltedJobs,
         jobs,
+        filtedJobs,
         userCandidacies,
         userJobs,
         candidates,

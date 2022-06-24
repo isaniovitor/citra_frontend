@@ -20,7 +20,7 @@ export const Conteiner = styled.div`
 // SearchMenu
 export const SearchMenuContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 
   height: 60px;

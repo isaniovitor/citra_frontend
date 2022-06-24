@@ -7,7 +7,7 @@ export interface JobData {
   cep: string;
   salary: string;
   picture: string;
-  typeRemuneration: string;
+  typeHires: string;
   description: string;
   userIdVacancy: string;
 }

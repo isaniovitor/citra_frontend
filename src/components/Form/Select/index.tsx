@@ -27,22 +27,23 @@ function Select({
       name: fieldName,
       ref: selectRef.current,
       getValue: ref => {
-        if (rest.isMulti) {
-          if (!ref.state.value) {
-            return [];
-          }
-          return ref.state.value.map((option: any) => option.value);
-        }
         if (ref.state.selectValue.length === 0) {
           return '';
         }
         return ref.state.selectValue[0].value;
       },
-      // clearValue: (ref) => {
-      // 	ref.select.clearValue();
-      // },
+      setValue: (ref, newValue) => {
+        // eslint-disable-next-line no-param-reassign
+        ref.state.selectValue[0] = newValue;
+      },
+      clearValue: ref => {
+        console.log(ref);
+        // ref.state.selectValue.length
+        // ref.select.clearValue();
+        ref.state.selectValue[0] = { value: '', label: '' };
+      },
     });
-  }, [fieldName, registerField, rest.isMulti]);
+  }, [fieldName, registerField]);
 
   return (
     <div style={{ width: '100%' }}>

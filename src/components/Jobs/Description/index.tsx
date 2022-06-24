@@ -4,9 +4,11 @@ import { InputHTMLAttributes, useState, useRef, useEffect } from 'react';
 import ReactInputMask from 'react-input-mask';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+
 // import ReactInputMask from 'react-input-mask';
 
 import type { JobData } from '../../../@types/job';
+import { shiftsOptions } from '../../../constants/RegisterJob';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useJob } from '../../../contexts/JobContext';
 import ReactDropzoneInput from '../../Form/DropZoneInput/ReactDropzoneInput';
@@ -48,10 +50,17 @@ function Description({
       )}
       <S.Title>{currentJob?.nameVacancy}</S.Title>
       <S.JobInfoConteiner>
-        <S.JobInfo>{currentJob?.shifts}</S.JobInfo>
+        <S.JobInfo>
+          {shiftsOptions.map(shift => {
+            if (shift.value === currentJob?.shifts) {
+              return shift.label;
+            }
+            return null;
+          })}
+        </S.JobInfo>
         <S.JobInfo>R${currentJob?.salary}</S.JobInfo>
         <S.JobInfo>{currentJob?.cep}</S.JobInfo>
-        <S.JobInfo>{currentJob?.typeRemuneration}</S.JobInfo>
+        <S.JobInfo>{currentJob?.typeHires}</S.JobInfo>
         <S.JobInfo>{currentJob?.nameCompany}</S.JobInfo>
       </S.JobInfoConteiner>
       <h5>Descrição da vaga</h5>
@@ -65,6 +74,9 @@ function Description({
         dolorum tenetur, cum doloremque pariatur? Neque ipsam aliquam asperiores
         qui tempore!
       </S.Description>
+
+      {/* <h5>Contato</h5> */}
+
       <h5>Documentos exigidos</h5>
       <S.FormConteiner ref={formRef} onSubmit={handleSubmit}>
         <div
