@@ -29,18 +29,6 @@ function UserCandidacies() {
   return (
     <S.Conteiner>
       <S.JobsSection>
-        <div
-          style={{
-            backgroundColor: 'aqua',
-            margin: '10px 0',
-            height: '50px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          Filtros
-        </div>
         {/* filters */}
         <Jobs jobsList={userCandidacies} />
       </S.JobsSection>

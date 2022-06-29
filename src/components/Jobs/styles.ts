@@ -9,7 +9,7 @@ export const JobsConteinar = styled.div`
 
   background-color: #fff;
 
-  margin-bottom: 10px;
+  margin: 10px 0;
 `;
 
 // Job description
